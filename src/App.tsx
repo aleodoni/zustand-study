@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useCallback } from 'react';
+import useStore from './stores/store';
 
 function App() {
+  console.log('renderizando app')
+
+  const {bears, increasePopulation, removeAllBears, gitHubUserInfo, userInfo, logradouro, getLogradouro} = useStore();
+
+  const getData = useCallback(async () => {
+    await Promise.all([
+      gitHubUserInfo(),
+      ])
+  }, [gitHubUserInfo]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <h1>Hello World</h1>
+    <p>Bears:{bears}</p>
+    <p>{userInfo.name}</p>
+    <p>{logradouro.logradouro}</p>
+
+    <button type="button" onClick={increasePopulation}>INCREASE</button>
+    <button type="button" onClick={removeAllBears}>REMOVE ALL</button>
+    <button type="button" onClick={getData}>GITHUB</button>
+    </>
   );
 }
 
