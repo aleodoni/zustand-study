@@ -2,9 +2,7 @@ import React, { useCallback } from 'react';
 import useStore from './stores/store';
 
 function App() {
-  console.log('renderizando app')
-
-  const {bears, increasePopulation, removeAllBears, gitHubUserInfo, userInfo, logradouro, getLogradouro} = useStore();
+  const {bears, increasePopulation, removeAllBears, gitHubUserInfo, userInfo, logradouro} = useStore();
 
   const getData = useCallback(async () => {
     await Promise.all([
