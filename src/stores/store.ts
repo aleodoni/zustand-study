@@ -1,6 +1,7 @@
 import create from 'zustand';
 import axios, { AxiosResponse } from 'axios';
 import produce from 'immer';
+import pick from 'lodash-es/pick';
 
 type UserInfo = {
   login: string;
@@ -39,6 +40,7 @@ const useStore = create<State>((set, get) => ({
     ])
 
     const [dataGithub, dataCep]:[AxiosResponse<UserInfo>, AxiosResponse<Logradouro>]= await promises;
+    // const [dataGithub, dataCep] = await promises;
 
     const filteredDataGithub = {
       id: dataGithub.data.id,
@@ -47,23 +49,34 @@ const useStore = create<State>((set, get) => ({
       login: dataGithub.data.login
     };
 
+    // const filteredDataGithub = pick(dataGithub.data, ['id', 'company', 'name', 'login']);
+
+    // console.log(filteredDataGithub)
+
     const filteredDataCep = {
       cep: dataCep.data.cep,
       logradouro: dataCep.data.logradouro,
       bairro: dataCep.data.bairro,
       localidade: dataCep.data.localidade
     };
+
+    set(produce(get(), draftState => {
+      draftState.userInfo = filteredDataGithub;
+      draftState.logradouro = filteredDataCep;
+    }));
     
-    set({ 
-      userInfo: filteredDataGithub, 
-      logradouro: filteredDataCep, 
-    });
+    // set({ 
+    //   userInfo: filteredDataGithub, 
+    //   logradouro: filteredDataCep, 
+    // });
 
-    const testState = produce(get(), draftState => {
-      draftState.logradouro.localidade = 'Jacupiranga'
-    })
+    // const testState = produce(get(), draftState => {
+    //   draftState.logradouro.localidade = 'Jacupiranga';
+    //   draftState.userInfo.name = 'Zacarias';
+    // })
 
-    console.log(testState);
+    // set(testState);
+
   },
   getLogradouro: async () => {
     console.log('---2');

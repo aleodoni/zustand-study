@@ -1,8 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import useStore from './stores/store';
 
 function App() {
+  
+  const bb = useStore.getState().bears;
   const {bears, increasePopulation, removeAllBears, gitHubUserInfo, userInfo, logradouro} = useStore();
+
+  useEffect(() => {
+    console.log(`BB mudou : ${bb}`);
+  }, [bb])
 
   const getData = useCallback(async () => {
     await Promise.all([
@@ -14,6 +20,7 @@ function App() {
     <>
     <h1>Hello World</h1>
     <p>Bears:{bears}</p>
+    <p>bb:{bb}</p>
     <p>{userInfo.name}</p>
     <p>{logradouro.logradouro}</p>
 
